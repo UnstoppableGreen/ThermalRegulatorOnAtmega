@@ -4,6 +4,7 @@
 #include <string.h>
 #include <stdbool.h>
 #include "LCD.h"
+#include "adc.h"
 
 #define TempOnOff 0
 #define PotateOnOff 1
@@ -26,19 +27,37 @@ int main(void) {
 	lcdSetDisplay(LCD_DISPLAY_ON);
 	lcdSetCursor(LCD_CURSOR_OFF);
 	char text[17];
-	strcpy(text, "    t = 10 C   ");
-	lcdGotoXY(0, 0);
-	lcdPuts(text);
-	strcpy(text, " ProjByKursovik ");
-	lcdGotoXY(1, 0);
-	lcdPuts(text);
-	
 
+	
+	int adcValue;
+	int temp;
+	    
+	ADC_Init();       /* Initialize the ADC module */
+	
+	
 	//работа со светодиодами
 	DDRF = 0b00000011;
+	DDRA = 0b00000001;
+	
 	while (1)
 	{
-		StateTempRotate(true, false); //работа устройств
+		adcValue = ADC_GetAdcValue(0); // Read the ADC value of channel zero(PA0) where the temperature sensor(LM35) is connected
+        
+        /* Convert the raw ADC value to equivalent temperature with 5v as ADC reference
+		 Step size of AdC= (5v/1023)=4.887mv = 5mv.
+		 for every degree celcius the Lm35 provides 10mv voltage change.
+	     1 step of ADC=5mv=0.5'c, hence the Raw ADC value can be divided by 2 to get equivalent temp*/
+        
+       // temp = adcValue/2.0; // Divide by 2 to get the temp value.
+		//strcpy(text, "ADC0 Value: " + adcValue);
+		strcpy(text, adcValue);
+		lcdGotoXY(0, 0);
+		lcdPuts(text);
+		//strcpy(text, "temp: " + temp);
+		strcpy(text, temp);
+		lcdGotoXY(1, 0);
+		lcdPuts(text); 			
+		//StateTempRotate(true, false); //работа устройств
 	}
 }
 
@@ -53,17 +72,3 @@ void StateTempRotate(bool stateTemp, bool statePotate){
 	}
 }
 
-// Read the AD conversion result
-uint16_t read_adc(uint8_t adc_input){
-	uint16_t abc=0;
-	ADMUX=adc_input | ADC_VREF_TYPE;
-	// Delay needed for the stabilization of the ADC input voltage
-	_delay_ms(10);
-	// Start the AD conversion
-	ADCSRA|=(1<<ADSC);
-	// Wait for the AD conversion to complete
-	while ((ADCSRA & (1<<ADIF))==0);
-	ADCSRA|=(1<<ADIF);
-	// warning
-	abc=ADCL+ADCH;
-return ADC;}

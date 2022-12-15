@@ -45,12 +45,15 @@ SUBDIRS :=  \
 ../src/ASF/mega/utils/ \
 ../src/ASF/mega/utils/assembler/ \
 ../src/ASF/mega/utils/preprocessor/ \
-../src/config/
+../src/config/ \
+../src/libfiles
 
 
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS +=  \
+../src/adc.c \
 ../src/ASF/common/boards/user_board/init.c \
+../src/delay.c \
 ../src/LCD.c \
 ../src/main.c
 
@@ -62,22 +65,30 @@ ASM_SRCS +=
 
 
 OBJS +=  \
+src/adc.o \
 src/ASF/common/boards/user_board/init.o \
+src/delay.o \
 src/LCD.o \
 src/main.o
 
 OBJS_AS_ARGS +=  \
+src/adc.o \
 src/ASF/common/boards/user_board/init.o \
+src/delay.o \
 src/LCD.o \
 src/main.o
 
 C_DEPS +=  \
+src/adc.d \
 src/ASF/common/boards/user_board/init.d \
+src/delay.d \
 src/LCD.d \
 src/main.d
 
 C_DEPS_AS_ARGS +=  \
+src/adc.d \
 src/ASF/common/boards/user_board/init.d \
+src/delay.d \
 src/LCD.d \
 src/main.d
 
@@ -102,17 +113,21 @@ LINKER_SCRIPT_DEP+=
 
 
 
-src/ASF/common/boards/user_board/%.o: ../src/ASF/common/boards/user_board/%.c
-	@echo Building file: $<
-	@echo Invoking: AVR/GNU C Compiler : 5.4.0
-	$(QUOTE)D:\PROGRAMMS_ON_DATA\ATMEL_STUDIO7.0\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE)  -x c -DDEBUG -DBOARD=USER_BOARD  -I"D:\PROGRAMMS_ON_DATA\ATMEL_STUDIO7.0\7.0\Packs\atmel\ATmega_DFP\1.3.300\include" -I"../src/ASF/common/boards/user_board" -I"../src/ASF/common/boards" -I"../src/ASF/mega/utils/preprocessor" -I"../src/ASF/mega/utils" -I"../src/ASF/common/utils" -I"../src" -I"../src/config"  -O1 -fdata-sections -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -mrelax -g3 -Wall -mmcu=atmega2560 -B "D:\PROGRAMMS_ON_DATA\ATMEL_STUDIO7.0\7.0\Packs\atmel\ATmega_DFP\1.3.300\gcc\dev\atmega2560" -c -std=gnu99 -fno-strict-aliasing -Wstrict-prototypes -Wmissing-prototypes -Werror-implicit-function-declaration -Wpointer-arith -mrelax -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
-	@echo Finished building: $<
-	
+
+
+
 
 src/%.o: ../src/%.c
 	@echo Building file: $<
 	@echo Invoking: AVR/GNU C Compiler : 5.4.0
-	$(QUOTE)D:\PROGRAMMS_ON_DATA\ATMEL_STUDIO7.0\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE)  -x c -DDEBUG -DBOARD=USER_BOARD  -I"D:\PROGRAMMS_ON_DATA\ATMEL_STUDIO7.0\7.0\Packs\atmel\ATmega_DFP\1.3.300\include" -I"../src/ASF/common/boards/user_board" -I"../src/ASF/common/boards" -I"../src/ASF/mega/utils/preprocessor" -I"../src/ASF/mega/utils" -I"../src/ASF/common/utils" -I"../src" -I"../src/config"  -O1 -fdata-sections -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -mrelax -g3 -Wall -mmcu=atmega2560 -B "D:\PROGRAMMS_ON_DATA\ATMEL_STUDIO7.0\7.0\Packs\atmel\ATmega_DFP\1.3.300\gcc\dev\atmega2560" -c -std=gnu99 -fno-strict-aliasing -Wstrict-prototypes -Wmissing-prototypes -Werror-implicit-function-declaration -Wpointer-arith -mrelax -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
+	$(QUOTE)D:\PROGRAMMS_ON_DATA\ATMEL_STUDIO7.0\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE)  -x c -DDEBUG -DBOARD=USER_BOARD  -I"D:\PROGRAMMS_ON_DATA\ATMEL_STUDIO7.0\7.0\Packs\atmel\ATmega_DFP\1.3.300\include" -I"../src/ASF/common/boards/user_board" -I"../src/ASF/common/boards" -I"../src/ASF/mega/utils/preprocessor" -I"../src/ASF/mega/utils" -I"../src/ASF/common/utils" -I"../src" -I"../src/config" -I"../src/00-libfiles"  -O1 -fdata-sections -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -mrelax -g3 -Wall -mmcu=atmega2560 -B "D:\PROGRAMMS_ON_DATA\ATMEL_STUDIO7.0\7.0\Packs\atmel\ATmega_DFP\1.3.300\gcc\dev\atmega2560" -c -std=gnu99 -fno-strict-aliasing -Wstrict-prototypes -Wmissing-prototypes -Werror-implicit-function-declaration -Wpointer-arith -mrelax -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
+	@echo Finished building: $<
+	
+
+src/ASF/common/boards/user_board/%.o: ../src/ASF/common/boards/user_board/%.c
+	@echo Building file: $<
+	@echo Invoking: AVR/GNU C Compiler : 5.4.0
+	$(QUOTE)D:\PROGRAMMS_ON_DATA\ATMEL_STUDIO7.0\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE)  -x c -DDEBUG -DBOARD=USER_BOARD  -I"D:\PROGRAMMS_ON_DATA\ATMEL_STUDIO7.0\7.0\Packs\atmel\ATmega_DFP\1.3.300\include" -I"../src/ASF/common/boards/user_board" -I"../src/ASF/common/boards" -I"../src/ASF/mega/utils/preprocessor" -I"../src/ASF/mega/utils" -I"../src/ASF/common/utils" -I"../src" -I"../src/config" -I"../src/00-libfiles"  -O1 -fdata-sections -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -mrelax -g3 -Wall -mmcu=atmega2560 -B "D:\PROGRAMMS_ON_DATA\ATMEL_STUDIO7.0\7.0\Packs\atmel\ATmega_DFP\1.3.300\gcc\dev\atmega2560" -c -std=gnu99 -fno-strict-aliasing -Wstrict-prototypes -Wmissing-prototypes -Werror-implicit-function-declaration -Wpointer-arith -mrelax -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
 	@echo Finished building: $<
 	
 
